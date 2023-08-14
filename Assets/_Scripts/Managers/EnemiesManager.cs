@@ -45,11 +45,14 @@ namespace TD.Managers
         {
             foreach (int enemyIndex in wave.enemiesAtWave)
             {
+                // Spawning enemy
                 Enemy enemy = _enemyFactory.SpawnEnemy(enemyIndex);
 
+                // Setting enemy move animation
                 float animationDuration = _pathDistance / enemy.Stats.Speed;
                 enemy.Transform.DOPath(_enemiesPath, animationDuration).
                     SetEase(Ease.Linear).
+                    OnWaypointChange((int index) => RotateEnemyToward(enemy, _enemiesPath[index])).
                     OnComplete(() => OnEnemyRichedEnd(enemy));
 
                 _spawnedEnemies.Add(enemy.Transform);
@@ -68,6 +71,11 @@ namespace TD.Managers
                 result[i-1] = path[i].position;
 
             return result;
+        }
+
+        private void RotateEnemyToward(Enemy enemy, Vector3 target)
+        {
+            enemy.Transform.LookAt(target);
         }
 
         private void OnEnemyRichedEnd(Enemy enemy)
