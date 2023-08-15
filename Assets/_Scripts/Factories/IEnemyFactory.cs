@@ -1,9 +1,7 @@
-﻿using TD.Enemies;
-
-namespace TD.Factories
+﻿namespace TD.Interfaces
 {
     public interface IEnemyFactory
     {
-        public Enemy SpawnEnemy(int enemyIndex);
+        public IEnemy SpawnEnemy(int enemyIndex);
     }
 }

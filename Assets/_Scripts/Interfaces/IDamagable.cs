@@ -1,4 +1,4 @@
-﻿namespace TD.Enemies
+﻿namespace TD.Interfaces
 {
     public interface IDamagable
     {

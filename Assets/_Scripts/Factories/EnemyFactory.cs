@@ -1,6 +1,6 @@
 using UnityEngine;
 using TD.Singleton;
-using TD.Enemies;
+using TD.Interfaces;
 
 namespace TD.Factories
 {
@@ -13,13 +13,13 @@ namespace TD.Factories
 
         [SerializeField] private GameObject[] _enemiesPrefabs;
 
-        public Enemy SpawnEnemy(int enemyIndex)
+        public IEnemy SpawnEnemy(int enemyIndex)
         {
             // Spawning new enemy on spawn tile
-            Enemy enemy = Instantiate(_enemiesPrefabs[enemyIndex], _spawnPoint.position, Quaternion.identity).GetComponent<Enemy>();
+            IEnemy enemy = Instantiate(_enemiesPrefabs[enemyIndex], _spawnPoint.position, Quaternion.identity).GetComponent<IEnemy>();
             // Setting enemies parent to correctly show in hierarchy
-            enemy.Transform.parent = _spawnParent;
-            
+            enemy.GetTransform().parent = _spawnParent;
+             
             return enemy;
         }
     }

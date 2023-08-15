@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace TD.Enemies
+namespace TD.Stats
 {
-    public class EnemyStats : MonoBehaviour, IDamagable
+    public class EnemyStats : MonoBehaviour
     {
         [SerializeField]
         private int _hp = 100;

@@ -1,6 +1,7 @@
 ﻿using Zenject;
+using TD.Managers;
 
-namespace TD.UI
+namespace TD.Installers
 {
     public sealed class TileUpgradePanelManagerInstaller : MonoInstaller
     {

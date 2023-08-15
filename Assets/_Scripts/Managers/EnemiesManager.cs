@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using TD.Factories;
 using TD.Singleton;
-using TD.Enemies;
+using TD.Interfaces;
 using UnityEngine;
 using DG.Tweening;
 using Zenject;
@@ -46,16 +45,16 @@ namespace TD.Managers
             foreach (int enemyIndex in wave.enemiesAtWave)
             {
                 // Spawning enemy
-                Enemy enemy = _enemyFactory.SpawnEnemy(enemyIndex);
+                IEnemy enemy = _enemyFactory.SpawnEnemy(enemyIndex);
 
                 // Setting enemy move animation
-                float animationDuration = _pathDistance / enemy.Stats.Speed;
-                enemy.Transform.DOPath(_enemiesPath, animationDuration).
+                float animationDuration = _pathDistance / enemy.GetStats().Speed;
+                enemy.GetTransform().DOPath(_enemiesPath, animationDuration).
                     SetEase(Ease.Linear).
                     OnWaypointChange((int index) => RotateEnemyToward(enemy, _enemiesPath[index])).
                     OnComplete(() => OnEnemyRichedEnd(enemy));
 
-                _spawnedEnemies.Add(enemy.Transform);
+                _spawnedEnemies.Add(enemy.GetTransform());
 
                 yield return new WaitForSeconds(spawnEnemyDelay);
             }
@@ -73,14 +72,14 @@ namespace TD.Managers
             return result;
         }
 
-        private void RotateEnemyToward(Enemy enemy, Vector3 target)
+        private void RotateEnemyToward(IEnemy enemy, Vector3 target)
         {
-            enemy.Transform.LookAt(target);
+            enemy.GetTransform().LookAt(target);
         }
 
-        private void OnEnemyRichedEnd(Enemy enemy)
+        private void OnEnemyRichedEnd(IEnemy enemy)
         {
-            Destroy(enemy.GameObject);
+            Destroy(enemy.GetGameObject());
 
             Debug.Log("Enemy reached finish");
         }

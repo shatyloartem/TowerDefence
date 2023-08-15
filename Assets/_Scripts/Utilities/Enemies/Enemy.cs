@@ -1,12 +1,14 @@
 using UnityEngine;
+using TD.Interfaces;
+using TD.Stats;
 
-namespace TD.Enemies
+namespace TD.Utilities
 {
-    public class Enemy : MonoBehaviour
+    public class Enemy : MonoBehaviour, IDamagable, IEnemy
     {
-        public GameObject GameObject { get; private set; }
-        public Transform Transform { get; private set; }
-        public EnemyStats Stats { get; private set; }
+        private GameObject GameObject;
+        private Transform Transform;
+        private EnemyStats Stats;
 
         private void Awake()
         {
@@ -14,5 +16,16 @@ namespace TD.Enemies
             GameObject = gameObject;
             Stats = GetComponent<EnemyStats>();
         }
+
+        public void GiveDamage(int damage)
+        {
+            Stats.GiveDamage(damage);
+        }
+
+        public GameObject GetGameObject() => GameObject;
+
+        public Transform GetTransform() => Transform;
+
+        public EnemyStats GetStats() => Stats;
     }
 }

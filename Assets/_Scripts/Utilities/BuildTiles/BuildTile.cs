@@ -1,10 +1,11 @@
-using TD.UI;
 using UnityEngine;
 using Zenject;
+using TD.Managers;
+using TD.Interfaces;
 
 namespace TD.Tiles
 {
-    public class BuildTile : MonoBehaviour, IInteractable
+    public class BuildTile : MonoBehaviour, IInteractable, ITile
     {
         public Transform Transform { get; private set; }
 
@@ -20,5 +21,7 @@ namespace TD.Tiles
         {
             _upgradePanelManager.SpawnPanelOnTile(this);
         }
+
+        public Transform GetTransform() => Transform;
     }
 }

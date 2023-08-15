@@ -2,10 +2,13 @@
     "name": "Managers",
     "rootNamespace": "",
     "references": [
-        "GUID:b42d18ff5957d624d8d138976f71abaf",
         "GUID:70ef75a1e8a9d23449e7b759d02e1442",
         "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
-        "GUID:75469ad4d38634e559750d17036d5f7c"
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:cbdc5c81e3b99444780ca42ab03f5fc4",
+        "GUID:afcba66ea3151ef499789e9f9566b6fe",
+        "GUID:6d72634b269ec9847bb8fd89197015d6",
+        "GUID:21c2a53421ffee9469974bb8aa80d38c"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

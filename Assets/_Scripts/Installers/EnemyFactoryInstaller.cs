@@ -1,6 +1,8 @@
 ﻿using Zenject;
+using TD.Factories;
+using TD.Interfaces;
 
-namespace TD.Factories
+namespace TD.Installers
 {
     public sealed class EnemyFactoryInstaller : MonoInstaller
     {
