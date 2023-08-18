@@ -1,4 +1,6 @@
 using UnityEngine;
+
+#if UNITY_EDITOR
 using UnityEditor.Tilemaps;
 
 namespace TD.Brushes
@@ -10,3 +12,4 @@ namespace TD.Brushes
 
     }
 }
+#endif

@@ -1,7 +1,6 @@
 ﻿using TD.Interfaces;
 using TD.Singleton;
 using UnityEngine;
-using Zenject;
 
 namespace TD.Managers
 {
@@ -9,9 +8,6 @@ namespace TD.Managers
     {
         [SerializeField]
         private GameObject _upgradePanel;
-
-        [Inject]
-        IBackButtonManager _backButtonManager;
 
         private Camera _camera;
 
@@ -21,7 +17,7 @@ namespace TD.Managers
         {
             _camera = Camera.main;
 
-            BackButtonManager.OnBackButtonPressed1 += BackButtonPressed;
+            BackButtonManager.OnBackButtonPressed += BackButtonPressed;
             //_backButtonManager.OnBackButtonPressed += BackButtonPressed;
         }
 

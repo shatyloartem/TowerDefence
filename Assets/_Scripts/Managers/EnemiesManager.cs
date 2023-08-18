@@ -8,7 +8,7 @@ using System.Collections;
 
 namespace TD.Managers
 {
-    public class EnemiesManager : Singleton<EnemiesManager>
+    public class EnemiesManager : Singleton<EnemiesManager>, IEnemiesManager
     {
         [SerializeField] private float spawnEnemyDelay = .9f;
 
@@ -93,6 +93,8 @@ namespace TD.Managers
 
             return result;
         }
+
+        public List<Transform> GetSpawnedEnemies() => _spawnedEnemies;
 
         private WaveScriptableObject[] LoadWaves => Resources.LoadAll<WaveScriptableObject>("Waves Data");
     }

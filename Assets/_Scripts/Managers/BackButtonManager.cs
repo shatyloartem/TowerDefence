@@ -4,20 +4,14 @@ using UnityEngine;
 
 namespace TD.Managers
 {
-    public class BackButtonManager : Singleton<BackButtonManager>, IBackButtonManager
+    public class BackButtonManager : Singleton<BackButtonManager>
     {
-        public static event Action OnBackButtonPressed1;
-        public event Action OnBackButtonPressed;
+        public static event Action OnBackButtonPressed;
 
         public void BackButton()
         {
-            OnBackButtonPressed1?.Invoke();
+            OnBackButtonPressed?.Invoke();
             Debug.Log("Pressed back button");
         }
-    }
-
-    public interface IBackButtonManager
-    {
-        public event Action OnBackButtonPressed;
     }
 }
