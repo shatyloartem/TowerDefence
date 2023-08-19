@@ -1,65 +1,83 @@
-using Zenject;
 using Unity.Jobs;
 using UnityEngine;
 using Unity.Burst;
 using Unity.Collections;
-using System.Collections.Generic;
 using TD.Interfaces;
 using Unity.Mathematics;
+using UnityEngine.Jobs;
 
 namespace TD.Turrets
 {
-    public abstract class TurretBase : MonoBehaviour
+    public class TurretBase : MonoBehaviour, ITurretBase
     {
         [SerializeField]
         private TurretStatsScriptableObject _stats;
 
-        [Inject]
-        private IEnemiesManager _enemiesManager;
-
         private Transform _turret;
+
+        private Transform _target;
 
         private void Awake()
         {
             _turret = transform;
-
-            Debug.Log(GetFireTarget());
         }
 
-        private Transform GetFireTarget()
+        private void LateUpdate()
         {
-            List<Transform> activeEnemies = _enemiesManager.GetSpawnedEnemies();
+            if(_target != null)
+                Debug.Log(_target);
+        }
 
-            NativeArray<float3> enemiesPositions = new NativeArray<float3>(activeEnemies.Count, Allocator.Temp);
+/*        private Transform GetFireTarget()
+        {
             
-            bool _canFire = false;
-
-            CalculateIfFireJob job = new CalculateIfFireJob()
-            {
-                fireRange = _stats.fireRange,
-                turret = _turret,
-                canFire = _canFire
-            };
-
-            JobHandle handle = job.Schedule();
             handle.Complete();
 
+            Transform target = activeEnemies[jobResult[0]];
+
+            enemiesPositions.Dispose();
+            jobResult.Dispose();
+
             return target;
+        }*/
+
+        public JobHandle StartCalculateTargetJob(NativeArray<float3> enemiesPositions, NativeArray<int> jobResult, int jobIndex)
+        {
+            CalculateIfFireJob job = new CalculateIfFireJob()
+            {
+                positions = enemiesPositions,
+                jobResult = jobResult,
+                fireRange = _stats.fireRange,
+                turret = _turret.position,
+                turretIndex = jobIndex
+            };
+
+            JobHandle handle = job.Schedule(enemiesPositions.Length, enemiesPositions.Length);
+
+            return handle;
         }
+
+        public void SetFireTarget(Transform target) => _target = target;
     }
 
     [BurstCompile]
-    public struct CalculateIfFireJob : IJob
+    public struct CalculateIfFireJob : IJobParallelFor
     {
+        public NativeArray<float3> positions;
+        public NativeArray<int> jobResult;
+
         public float fireRange;
-        public Transform target;
-        public Transform turret;
+        public float3 turret;
 
-        public bool canFire;
+        public int turretIndex;
 
-        public void Execute()
+        public void Execute(int index)
         {
-            canFire = (Vector3.Distance(target.position, turret.position)) < fireRange;
+            if (math.distance(positions[index], turret) < fireRange)
+            {
+                jobResult[turretIndex] = index;
+                return;
+            }
         }
     }
 }

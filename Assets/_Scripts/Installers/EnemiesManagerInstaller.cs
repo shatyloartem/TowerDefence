@@ -1,5 +1,6 @@
 ﻿using Zenject;
 using TD.Managers;
+using TD.Interfaces;
 
 namespace TD.Installers
 {
@@ -8,7 +9,7 @@ namespace TD.Installers
         public override void InstallBindings()
         {
             Container.
-                Bind<EnemiesManager>().
+                Bind<IEnemiesManager>().
                 To<EnemiesManager>().
                 FromComponentInNewPrefab(GetComponent<EnemiesManager>()).
                 AsSingle();
