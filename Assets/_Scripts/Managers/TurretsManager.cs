@@ -40,16 +40,15 @@ namespace TD.Managers
             NativeArray<JobHandle> handles = new NativeArray<JobHandle>(turrets.Count, Allocator.Temp);
 
             NativeArray<int> jobResults = new NativeArray<int>(turrets.Count, Allocator.TempJob);
+            //float3[] enemiesPositions = new float3[activeEnemies.Count];//new NativeArray<float3>(activeEnemies.Count, Allocator.TempJob);
+            NativeArray<float3> enemiesPositions = new NativeArray<float3>(activeEnemies.Count, Allocator.Temp);
+
+            for (int i = 0; i < activeEnemies.Count; i++)
+                enemiesPositions[i] = activeEnemies[i].position;
 
             for (int i = 0; i < turrets.Count; i++)
             {
-                NativeArray<float3> enemiesPositions = new NativeArray<float3>(activeEnemies.Count, Allocator.TempJob);
-
-                for (int j = 0; j < activeEnemies.Count; j++)
-                    enemiesPositions[i] = activeEnemies[i].position;
-
                 handles[i] = turrets[i].StartCalculateTargetJob(enemiesPositions, jobResults, i);
-                enemiesPositions.Dispose();
             }
 
             JobHandle.CompleteAll(handles);
@@ -57,6 +56,7 @@ namespace TD.Managers
             for (int i = 0; i < turrets.Count; i++)
                 turrets[i].SetFireTarget(activeEnemies[jobResults[i]]);
 
+            enemiesPositions.Dispose();
             handles.Dispose();
             jobResults.Dispose();
         }
