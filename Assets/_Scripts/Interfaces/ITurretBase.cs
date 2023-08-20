@@ -2,6 +2,7 @@
 using Unity.Jobs;
 using Unity.Collections;
 using Unity.Mathematics;
+using System.Collections.Generic;
 
 namespace TD.Interfaces
 {
@@ -9,6 +10,6 @@ namespace TD.Interfaces
     {
         public void SetFireTarget(Transform target);
 
-        public JobHandle StartCalculateTargetJob(NativeArray<float3> enemiesPositions, NativeArray<int> jobResult, int jobIndex);
+        public JobHandle StartCalculateTargetJob(int enemiesCount, NativeArray<int> jobResult, int jobIndex, JobHandle dependentJob);
     }
 }

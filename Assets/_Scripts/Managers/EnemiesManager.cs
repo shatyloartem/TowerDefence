@@ -5,10 +5,11 @@ using UnityEngine;
 using DG.Tweening;
 using Zenject;
 using System.Collections;
+using Unity.Mathematics;
 
 namespace TD.Managers
 {
-    public class EnemiesManager : Singleton<EnemiesManager>, IEnemiesManager
+    public class EnemiesManager : MonoBehaviour, IEnemiesManager
     {
         [SerializeField] private float spawnEnemyDelay = .9f;
 
@@ -24,9 +25,14 @@ namespace TD.Managers
         private WaveScriptableObject[] _waves;
 
         private List<Transform> _spawnedEnemies = new List<Transform>();
+        private List<float3> _spawnedEnemiesPositions = new List<float3>();
 
-        protected override void Awake()
+        private static EnemiesManager Instance;
+
+        private void Awake()
         {
+            Instance = this;
+
             _waves = LoadWaves;
             _enemiesPath = LoadEnemiesPath();
             _pathDistance = GetPathDistance(_enemiesPath);
@@ -55,6 +61,7 @@ namespace TD.Managers
                     OnComplete(() => OnEnemyRichedEnd(enemy));
 
                 _spawnedEnemies.Add(enemy.GetTransform());
+                _spawnedEnemiesPositions.Add(enemy.GetTransform().position);
 
                 yield return new WaitForSeconds(spawnEnemyDelay);
             }
@@ -94,7 +101,9 @@ namespace TD.Managers
             return result;
         }
 
-        public List<Transform> GetSpawnedEnemies() => _spawnedEnemies;
+        public static List<Transform> GetSpawnedEnemies() => Instance._spawnedEnemies;
+
+        public static List<float3> GetSpawnedEnemiesPositions() => Instance._spawnedEnemiesPositions;
 
         private WaveScriptableObject[] LoadWaves => Resources.LoadAll<WaveScriptableObject>("Waves Data");
     }

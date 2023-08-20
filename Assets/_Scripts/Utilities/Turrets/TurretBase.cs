@@ -5,6 +5,8 @@ using Unity.Collections;
 using TD.Interfaces;
 using Unity.Mathematics;
 using UnityEngine.Jobs;
+using System.Collections.Generic;
+using TD.Managers;
 
 namespace TD.Turrets
 {
@@ -25,34 +27,20 @@ namespace TD.Turrets
         private void LateUpdate()
         {
             if(_target != null)
-                Debug.Log(_target);
+                Debug.DrawLine(_target.position, _turret.position);
         }
 
-/*        private Transform GetFireTarget()
-        {
-            
-            handle.Complete();
-
-            Transform target = activeEnemies[jobResult[0]];
-
-            enemiesPositions.Dispose();
-            jobResult.Dispose();
-
-            return target;
-        }*/
-
-        public JobHandle StartCalculateTargetJob(NativeArray<float3> enemiesPositions, NativeArray<int> jobResult, int jobIndex)
+        public JobHandle StartCalculateTargetJob(int enemiesCount , NativeArray<int> jobResult, int jobIndex, JobHandle dependentJob)
         {
             CalculateIfFireJob job = new CalculateIfFireJob()
             {
-                positions = enemiesPositions,
                 jobResult = jobResult,
                 fireRange = _stats.fireRange,
                 turret = _turret.position,
                 turretIndex = jobIndex
             };
 
-            JobHandle handle = job.Schedule(enemiesPositions.Length, enemiesPositions.Length);
+            JobHandle handle = job.Schedule(enemiesCount, enemiesCount, dependentJob);
 
             return handle;
         }
@@ -63,7 +51,6 @@ namespace TD.Turrets
     [BurstCompile]
     public struct CalculateIfFireJob : IJobParallelFor
     {
-        public NativeArray<float3> positions;
         public NativeArray<int> jobResult;
 
         public float fireRange;
@@ -73,7 +60,9 @@ namespace TD.Turrets
 
         public void Execute(int index)
         {
-            if (math.distance(positions[index], turret) < fireRange)
+            List<float3> activeEnemies = EnemiesManager.GetSpawnedEnemiesPositions();
+
+            if (math.distance(activeEnemies[index], turret) < fireRange)
             {
                 jobResult[turretIndex] = index;
                 return;

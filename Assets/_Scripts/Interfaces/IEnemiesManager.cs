@@ -5,6 +5,6 @@ namespace TD.Interfaces
 {
     public interface IEnemiesManager
     {
-        public List<Transform> GetSpawnedEnemies();
+        //public List<Transform> GetSpawnedEnemies();
     }
 }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections;
 using Unity.Jobs;
-using Unity.Mathematics;
 using Zenject;
 
 namespace TD.Managers
@@ -26,29 +25,24 @@ namespace TD.Managers
             turrets = FindObjectsOfType<MonoBehaviour>().OfType<ITurretBase>().ToList();
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             CalculateTargetsJob();
         }
 
         private void CalculateTargetsJob()
         {
-            List<Transform> activeEnemies = _enemiesManager.GetSpawnedEnemies();
+            List<Transform> activeEnemies = EnemiesManager.GetSpawnedEnemies();
 
             if (activeEnemies.Count == 0) return;
 
             NativeArray<JobHandle> handles = new NativeArray<JobHandle>(turrets.Count, Allocator.Temp);
 
             NativeArray<int> jobResults = new NativeArray<int>(turrets.Count, Allocator.TempJob);
-            //float3[] enemiesPositions = new float3[activeEnemies.Count];//new NativeArray<float3>(activeEnemies.Count, Allocator.TempJob);
-            NativeArray<float3> enemiesPositions = new NativeArray<float3>(activeEnemies.Count, Allocator.Temp);
-
-            for (int i = 0; i < activeEnemies.Count; i++)
-                enemiesPositions[i] = activeEnemies[i].position;
 
             for (int i = 0; i < turrets.Count; i++)
             {
-                handles[i] = turrets[i].StartCalculateTargetJob(enemiesPositions, jobResults, i);
+                handles[i] = turrets[i].StartCalculateTargetJob(activeEnemies.Count, jobResults, i, i > 0 ? handles[i-1] : default);
             }
 
             JobHandle.CompleteAll(handles);
@@ -56,7 +50,6 @@ namespace TD.Managers
             for (int i = 0; i < turrets.Count; i++)
                 turrets[i].SetFireTarget(activeEnemies[jobResults[i]]);
 
-            enemiesPositions.Dispose();
             handles.Dispose();
             jobResults.Dispose();
         }
