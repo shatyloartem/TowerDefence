@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: DefTurret
   m_EditorClassIdentifier: 
   damage: 10
-  fireRange: 4
+  fireRange: 7
   fireCooldown: 0.5
+  towerRotationSpeed: 75
+  fireAngle: 20

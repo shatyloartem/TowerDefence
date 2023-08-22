@@ -18,7 +18,6 @@ namespace TD.Managers
             _camera = Camera.main;
 
             BackButtonManager.OnBackButtonPressed += BackButtonPressed;
-            //_backButtonManager.OnBackButtonPressed += BackButtonPressed;
         }
 
         public void SpawnPanelOnTile(ITile tile)
@@ -29,14 +28,10 @@ namespace TD.Managers
             _upgradePanel.SetActive(true);
 
             _isPanelSpawned = true;
-
-            Debug.Log("Spawned panel");
         }
 
         private void BackButtonPressed()
         {
-            Debug.Log("Back button event invoked");
-
             if (!_isPanelSpawned) return;
 
             _isPanelSpawned = false;

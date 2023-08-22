@@ -11,7 +11,6 @@ namespace TD.Managers
         public void BackButton()
         {
             OnBackButtonPressed?.Invoke();
-            Debug.Log("Pressed back button");
         }
     }
 }

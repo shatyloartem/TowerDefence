@@ -4,15 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections;
 using Unity.Jobs;
-using Zenject;
 
 namespace TD.Managers
 {
     public class TurretsManager : MonoBehaviour
     {
-        [Inject]
-        private IEnemiesManager _enemiesManager;
-
         private List<ITurretBase> turrets;
 
         private void Awake()
@@ -46,9 +42,9 @@ namespace TD.Managers
             }
 
             JobHandle.CompleteAll(handles);
-            
+
             for (int i = 0; i < turrets.Count; i++)
-                turrets[i].SetFireTarget(activeEnemies[jobResults[i]]);
+                turrets[i].SetFireTarget(jobResults[i] == 0 ? null : activeEnemies[jobResults[i]-1]);
 
             handles.Dispose();
             jobResults.Dispose();

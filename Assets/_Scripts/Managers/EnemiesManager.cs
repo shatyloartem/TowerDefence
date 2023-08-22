@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using TD.Singleton;
 using TD.Interfaces;
 using UnityEngine;
 using DG.Tweening;
@@ -42,6 +41,8 @@ namespace TD.Managers
         {
             if (Input.GetKeyDown(KeyCode.S))
                 SpawnWave(_waves[0]);
+
+            UpdateEnemiesPositions();
         }
 
         public void SpawnWave(WaveScriptableObject wave) => StartCoroutine(SpawnWaveCoroutine(wave));
@@ -88,7 +89,10 @@ namespace TD.Managers
         {
             Destroy(enemy.GetGameObject());
 
-            Debug.Log("Enemy reached finish");
+            int enemyIndex = _spawnedEnemies.IndexOf(enemy.GetTransform());
+
+            _spawnedEnemies.RemoveAt(enemyIndex);
+            _spawnedEnemiesPositions.RemoveAt(enemyIndex);
         }
 
         private float GetPathDistance(Vector3[] path)
@@ -99,6 +103,13 @@ namespace TD.Managers
                 result += Vector3.Distance(path[i - 1], path[i]);
 
             return result;
+        }
+
+        private void UpdateEnemiesPositions()
+        {
+            int spawnedEnemiesCount = _spawnedEnemies.Count;
+            for(int i = 0; i < spawnedEnemiesCount; i++)
+                _spawnedEnemiesPositions[i] = _spawnedEnemies[i].position;
         }
 
         public static List<Transform> GetSpawnedEnemies() => Instance._spawnedEnemies;

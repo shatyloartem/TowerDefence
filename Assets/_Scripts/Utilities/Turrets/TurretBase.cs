@@ -1,6 +1,5 @@
 using Unity.Jobs;
 using UnityEngine;
-using Unity.Burst;
 using Unity.Collections;
 using TD.Interfaces;
 using Unity.Mathematics;
@@ -15,8 +14,12 @@ namespace TD.Turrets
         [SerializeField]
         private TurretStatsScriptableObject _stats;
 
-        private Transform _turret;
+        [Space(7)]
 
+        [SerializeField]
+        private Transform _tower;
+
+        private Transform _turret;
         private Transform _target;
 
         private void Awake()
@@ -24,11 +27,27 @@ namespace TD.Turrets
             _turret = transform;
         }
 
-        private void LateUpdate()
+        private void Update()
         {
-            if(_target != null)
-                Debug.DrawLine(_target.position, _turret.position);
+            if (_target == null) return;
+
+            // Debug
+            Debug.DrawLine(_target.position, _turret.position);
+
+            TurnTowerToTarget();
         }
+
+        #region Tower turning
+        
+        private void TurnTowerToTarget()
+        {
+            Quaternion rotTarget = Quaternion.LookRotation(_target.position - _tower.position);
+            _tower.rotation = Quaternion.RotateTowards(_tower.rotation, rotTarget, _stats.towerRotationSpeed * Time.deltaTime);
+        }
+
+        #endregion
+
+        #region Finding enemies
 
         public JobHandle StartCalculateTargetJob(int enemiesCount , NativeArray<int> jobResult, int jobIndex, JobHandle dependentJob)
         {
@@ -48,9 +67,11 @@ namespace TD.Turrets
         public void SetFireTarget(Transform target) => _target = target;
     }
 
-    [BurstCompile]
+    // Commented this attribute because of error when calling methood EnemiesManager.GetSpawnedEnemiesPositions();
+    //[BurstCompile]
     public struct CalculateIfFireJob : IJobParallelFor
     {
+        [NativeDisableParallelForRestriction]
         public NativeArray<int> jobResult;
 
         public float fireRange;
@@ -60,13 +81,19 @@ namespace TD.Turrets
 
         public void Execute(int index)
         {
+            if (jobResult[turretIndex] != 0)
+                return;
+
             List<float3> activeEnemies = EnemiesManager.GetSpawnedEnemiesPositions();
 
-            if (math.distance(activeEnemies[index], turret) < fireRange)
+            float dist = math.distance(activeEnemies[index], turret);
+
+            if (dist < fireRange)
             {
-                jobResult[turretIndex] = index;
+                jobResult[turretIndex] = index+1;
                 return;
             }
         }
     }
+#endregion
 }
