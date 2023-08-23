@@ -6,21 +6,31 @@ using Unity.Mathematics;
 using UnityEngine.Jobs;
 using System.Collections.Generic;
 using TD.Managers;
+using Sirenix.OdinInspector;
 
 namespace TD.Turrets
 {
     public class TurretBase : MonoBehaviour, ITurretBase
     {
+        [TabGroup("Tower settings")]
         [SerializeField]
         private TurretStatsScriptableObject _stats;
 
         [Space(7)]
 
+        [TabGroup("Essentials")]
         [SerializeField]
         private Transform _tower;
 
+        [TabGroup("Essentials")]
+        [SerializeField]
+        private ParticleSystem _particles;
+
+
         private Transform _turret;
         private Transform _target;
+
+        private float lastTimeFired;
 
         private void Awake()
         {
@@ -35,10 +45,38 @@ namespace TD.Turrets
             Debug.DrawLine(_target.position, _turret.position);
 
             TurnTowerToTarget();
+
+            TryToFire();
         }
 
-        #region Tower turning
+        #region Firing
         
+        private void TryToFire()
+        {
+            if (Time.time < lastTimeFired + _stats.fireCooldown) return;
+
+            lastTimeFired = Time.time;
+
+            PlayFireParticles();
+
+            Fire();
+        }
+
+        private void PlayFireParticles()
+        {
+            if(_particles != null)
+                _particles.Play();
+        }
+
+        protected virtual void Fire()
+        {
+
+        }
+        
+        #endregion
+
+        #region Tower turning
+
         private void TurnTowerToTarget()
         {
             Quaternion rotTarget = Quaternion.LookRotation(_target.position - _tower.position);
