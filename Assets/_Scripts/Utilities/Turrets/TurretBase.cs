@@ -10,25 +10,25 @@ using Sirenix.OdinInspector;
 
 namespace TD.Turrets
 {
-    public class TurretBase : MonoBehaviour, ITurretBase
+    public abstract class TurretBase : MonoBehaviour, ITurretBase
     {
         [TabGroup("Tower settings")]
         [SerializeField]
-        private TurretStatsScriptableObject _stats;
+        protected TurretStatsScriptableObject _stats;
 
         [Space(7)]
 
         [TabGroup("Essentials")]
         [SerializeField]
-        private Transform _tower;
+        protected Transform _tower;
 
         [TabGroup("Essentials")]
         [SerializeField]
-        private ParticleSystem _particles;
+        protected ParticleSystem _particles;
 
 
-        private Transform _turret;
-        private Transform _target;
+        protected Transform _turret;
+        protected Transform _target;
 
         private float lastTimeFired;
 
@@ -41,9 +41,6 @@ namespace TD.Turrets
         {
             if (_target == null) return;
 
-            // Debug
-            Debug.DrawLine(_target.position, _turret.position);
-
             TurnTowerToTarget();
 
             TryToFire();
@@ -55,17 +52,19 @@ namespace TD.Turrets
         {
             if (Time.time < lastTimeFired + _stats.fireCooldown) return;
 
+            if(Vector3.Angle(_turret.forward, _target.position - _turret.position) < _stats.fireAngle) return;
+
             lastTimeFired = Time.time;
 
-            PlayFireParticles();
+            if(_particles != null)
+                PlayFireParticles();
 
             Fire();
         }
 
-        private void PlayFireParticles()
+        protected virtual void PlayFireParticles()
         {
-            if(_particles != null)
-                _particles.Play();
+            
         }
 
         protected virtual void Fire()
@@ -133,5 +132,6 @@ namespace TD.Turrets
             }
         }
     }
+
 #endregion
 }
