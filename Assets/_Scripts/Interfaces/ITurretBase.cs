@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using Unity.Jobs;
 using Unity.Collections;
-using Unity.Mathematics;
-using System.Collections.Generic;
 
 namespace TD.Interfaces
 {

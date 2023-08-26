@@ -1,3 +1,4 @@
+using Codice.Client.BaseCommands;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -6,6 +7,14 @@ namespace TD.Turrets
     [CreateAssetMenu(fileName = "New Turret Stats", menuName = "Turrets/Stats")]
     public class TurretStatsScriptableObject : ScriptableObject
     {
+        [Header("Menu")]
+        [TabGroup("Menu")]
+        public Sprite buttonIcon;
+        [TabGroup("Menu")]
+        public int turretCost = 100;
+        [TabGroup("Menu")]
+        public int turretIndex = 0;
+
         [Header("Basic")]
         [TabGroup("Basic")]
         public int damage = 10;

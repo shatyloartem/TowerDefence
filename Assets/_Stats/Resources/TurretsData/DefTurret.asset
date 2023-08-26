@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce3d282197a5f074c8394da927502144, type: 3}
   m_Name: DefTurret
   m_EditorClassIdentifier: 
+  buttonIcon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   damage: 10
   fireRange: 7
   fireCooldown: 0.5

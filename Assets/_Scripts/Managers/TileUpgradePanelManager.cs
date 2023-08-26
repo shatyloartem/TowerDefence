@@ -1,6 +1,10 @@
 ﻿using TD.Interfaces;
 using TD.Singleton;
+using TD.Stats;
+using TD.Turrets;
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TD.Managers
 {
@@ -13,11 +17,21 @@ namespace TD.Managers
 
         private bool _isPanelSpawned;
 
+        private TurretStatsScriptableObject[] turrets;
+
+        private IUpgradePanelController _upgradePanelController;
+
         protected override void Awake()
         {
             _camera = Camera.main;
 
             BackButtonManager.OnBackButtonPressed += BackButtonPressed;
+
+            turrets = LoadTurrets;
+
+            var i = FindObjectsOfType<MonoBehaviour>().OfType<IUpgradePanelController>();
+            foreach(IUpgradePanelController upgradePanel in i)
+                _upgradePanelController = upgradePanel;
         }
 
         public void SpawnPanelOnTile(ITile tile)
@@ -28,6 +42,8 @@ namespace TD.Managers
             _upgradePanel.SetActive(true);
 
             _isPanelSpawned = true;
+
+            _upgradePanelController.SetButtons(GetButtonsDataFromTurrets());
         }
 
         private void BackButtonPressed()
@@ -38,6 +54,18 @@ namespace TD.Managers
 
             _upgradePanel.SetActive(false);
         }
+
+        private UpgradePanelButtonData[] GetButtonsDataFromTurrets()
+        {
+            List<UpgradePanelButtonData> buttons = new List<UpgradePanelButtonData>();
+
+            foreach (var turret in turrets)
+                buttons.Add(new UpgradePanelButtonData(turret.buttonIcon, turret.turretCost, turret.turretIndex));
+
+            return buttons.ToArray();
+        }
+
+        private TurretStatsScriptableObject[] LoadTurrets => Resources.LoadAll<TurretStatsScriptableObject>("TurretsData");
     }
 
     public interface ITileUpgradePanelManager

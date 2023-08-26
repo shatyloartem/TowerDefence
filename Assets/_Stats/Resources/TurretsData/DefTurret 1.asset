@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce3d282197a5f074c8394da927502144, type: 3}
+  m_Name: DefTurret 1
+  m_EditorClassIdentifier: 
+  buttonIcon: {fileID: 21300000, guid: 4a0cb101304f771448ce202bf79633d0, type: 3}
+  turretCost: 200
+  turretIndex: 1
+  damage: 10
+  fireRange: 7
+  fireCooldown: 0.5
+  towerRotationSpeed: 75
+  fireAngle: 20

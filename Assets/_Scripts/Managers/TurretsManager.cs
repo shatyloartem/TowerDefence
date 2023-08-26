@@ -1,5 +1,6 @@
 using UnityEngine;
 using TD.Interfaces;
+using TD.Singleton;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections;
@@ -7,16 +8,16 @@ using Unity.Jobs;
 
 namespace TD.Managers
 {
-    public class TurretsManager : MonoBehaviour
+    public class TurretsManager : Singleton<TurretsManager>
     {
         private List<ITurretBase> turrets;
 
-        private void Awake()
+        protected override void Awake()
         {
             UpdateTurrets();
         }
 
-        private void UpdateTurrets()
+        public void UpdateTurrets()
         {
             turrets = FindObjectsOfType<MonoBehaviour>().OfType<ITurretBase>().ToList();
         }
