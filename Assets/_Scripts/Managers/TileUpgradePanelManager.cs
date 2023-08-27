@@ -29,7 +29,7 @@ namespace TD.Managers
 
             turrets = LoadTurrets;
 
-            var i = FindObjectsOfType<MonoBehaviour>().OfType<IUpgradePanelController>();
+            var i = FindObjectsOfType<MonoBehaviour>(true).OfType<IUpgradePanelController>();
             foreach(IUpgradePanelController upgradePanel in i)
                 _upgradePanelController = upgradePanel;
         }

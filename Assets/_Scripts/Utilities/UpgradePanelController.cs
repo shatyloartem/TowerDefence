@@ -24,6 +24,13 @@ namespace TD.UI
             layoutGroup = buttonsSpawnParent.GetComponent<HorizontalLayoutGroup>();
         }
 
+        private void OnEnable()
+        {
+            if (Transform == null) Transform = GetComponent<RectTransform>();
+
+            if (layoutGroup == null) buttonsSpawnParent.GetComponent<HorizontalLayoutGroup>();
+        }
+
         public void SetButtons(UpgradePanelButtonData[] buttons)
         {
             // Destroy all previous button
@@ -45,9 +52,6 @@ namespace TD.UI
 
         private void SetPanelSize()
         {
-            Debug.Log(Transform);
-            Debug.Log(buttonsSpawnParent);
-
             float offsetFromBorder = Transform.rect.width - buttonsSpawnParent.rect.width;
             float spacing = (buttonsSpawnParent.childCount - 1) * layoutGroup.spacing;
             float buttonsSize = buttonsSpawnParent.childCount * buttonPrefab.GetComponent<RectTransform>().rect.width;
