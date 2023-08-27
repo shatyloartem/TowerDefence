@@ -56,6 +56,9 @@ namespace TD.UI
             float spacing = (buttonsSpawnParent.childCount - 1) * layoutGroup.spacing;
             float buttonsSize = buttonsSpawnParent.childCount * buttonPrefab.GetComponent<RectTransform>().rect.width;
 
+            Debug.Log("Buttons count: " + buttonsSpawnParent.childCount);
+            Debug.Log($"OffsetFromBorder: {offsetFromBorder}; Spacing: {spacing}; ButtonsSize: {buttonsSize}");
+
             Transform.sizeDelta = new Vector2(offsetFromBorder + spacing + buttonsSize, Transform.sizeDelta.y);
         }
     }
