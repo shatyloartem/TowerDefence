@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TD.Interfaces;
+using TD.Components;
 using TD.Singleton;
 using TD.Stats;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace TD.UI
         [SerializeField]
         private RectTransform buttonsSpawnParent;
 
-        private HorizontalLayoutGroup layoutGroup;
+        private HorizontalLayoutGroupFixed layoutGroup;
 
         private RectTransform Transform;
 
@@ -24,7 +25,7 @@ namespace TD.UI
         protected override void Awake()
         {
             Transform = GetComponent<RectTransform>();
-            layoutGroup = buttonsSpawnParent.GetComponent<HorizontalLayoutGroup>();
+            layoutGroup = buttonsSpawnParent.GetComponent<HorizontalLayoutGroupFixed>();
         }
 
         private void OnEnable()
@@ -52,13 +53,15 @@ namespace TD.UI
                 spawnedButtons.Add(spawned);
             }
 
+            layoutGroup.UpdateChildren();
+
             // Fit panel size
             SetPanelSize();
         }
 
         public void OnButtonPressed(UpgradePanelButtonData buttonData)
         {
-
+            Debug.Log(buttonData);
         }
 
         private void SetPanelSize()
@@ -66,11 +69,6 @@ namespace TD.UI
             float offsetFromBorder = Transform.rect.width - buttonsSpawnParent.rect.width;
             float spacing = (spawnedButtons.Count - 1) * layoutGroup.spacing;
             float buttonsSize = spawnedButtons.Count * buttonPrefab.GetComponent<RectTransform>().rect.width;
-
-            Debug.Log("Buttons count: " + spawnedButtons.Count);
-            Debug.Log($"OffsetFromBorder: {offsetFromBorder}; Spacing: {spacing}; ButtonsSize: {buttonsSize}");
-
-            Debug.Log("===============");
 
             Transform.sizeDelta = new Vector2(offsetFromBorder + spacing + buttonsSize, Transform.sizeDelta.y);
         }

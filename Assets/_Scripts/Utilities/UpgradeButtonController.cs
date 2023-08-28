@@ -1,5 +1,4 @@
 using TD.Stats;
-using TD.Singleton;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -18,15 +17,20 @@ namespace TD.UI
 
         public void UpdateButton(UpgradePanelButtonData data)
         {
-            icon.sprite = data.icon;
-            costText.text = data.cost.ToString();
+            if(icon != null)
+                icon.sprite = data.icon;
+    
+            if(costText != null)
+                costText.text = data.cost.ToString();
 
             this.data = data;
         }
 
         public void PressButton()
         {
-            UpgradePanelController.Instance.OnButtonPressed(data);
+            Debug.Log("Button pressed");
+
+            //UpgradePanelController.Instance.OnButtonPressed(data);
         }
     }
 }
