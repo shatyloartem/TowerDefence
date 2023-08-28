@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TD.Interfaces;
 using TD.Singleton;
 using TD.Stats;
@@ -18,6 +19,8 @@ namespace TD.UI
 
         private RectTransform Transform;
 
+        private List<GameObject> spawnedButtons = new List<GameObject>();
+
         protected override void Awake()
         {
             Transform = GetComponent<RectTransform>();
@@ -34,12 +37,20 @@ namespace TD.UI
         public void SetButtons(UpgradePanelButtonData[] buttons)
         {
             // Destroy all previous button
-            foreach(Transform child in buttonsSpawnParent)
-                Destroy(child.gameObject);
+            foreach(GameObject button in spawnedButtons)
+                Destroy(button);
+
+            spawnedButtons.Clear();
 
             // Spawn new buttons
-            foreach(UpgradePanelButtonData button in buttons)
-                Instantiate(buttonPrefab, buttonsSpawnParent).GetComponent<UpgradeButtonController>().UpdateButton(button);
+            foreach (UpgradePanelButtonData button in buttons)
+            {
+                GameObject spawned = Instantiate(buttonPrefab, buttonsSpawnParent);
+                
+                spawned.GetComponent<UpgradeButtonController>().UpdateButton(button);
+
+                spawnedButtons.Add(spawned);
+            }
 
             // Fit panel size
             SetPanelSize();
@@ -53,11 +64,13 @@ namespace TD.UI
         private void SetPanelSize()
         {
             float offsetFromBorder = Transform.rect.width - buttonsSpawnParent.rect.width;
-            float spacing = (buttonsSpawnParent.childCount - 1) * layoutGroup.spacing;
-            float buttonsSize = buttonsSpawnParent.childCount * buttonPrefab.GetComponent<RectTransform>().rect.width;
+            float spacing = (spawnedButtons.Count - 1) * layoutGroup.spacing;
+            float buttonsSize = spawnedButtons.Count * buttonPrefab.GetComponent<RectTransform>().rect.width;
 
-            Debug.Log("Buttons count: " + buttonsSpawnParent.childCount);
+            Debug.Log("Buttons count: " + spawnedButtons.Count);
             Debug.Log($"OffsetFromBorder: {offsetFromBorder}; Spacing: {spacing}; ButtonsSize: {buttonsSize}");
+
+            Debug.Log("===============");
 
             Transform.sizeDelta = new Vector2(offsetFromBorder + spacing + buttonsSize, Transform.sizeDelta.y);
         }
