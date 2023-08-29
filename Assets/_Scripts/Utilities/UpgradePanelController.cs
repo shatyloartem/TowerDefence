@@ -53,7 +53,7 @@ namespace TD.UI
                 spawnedButtons.Add(spawned);
             }
 
-            layoutGroup.UpdateChildren();
+            layoutGroup.UpdateChildren(spawnedButtons);
 
             // Fit panel size
             SetPanelSize();

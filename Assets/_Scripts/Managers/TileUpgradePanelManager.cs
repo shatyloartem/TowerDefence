@@ -16,6 +16,7 @@ namespace TD.Managers
         private Camera _camera;
 
         private bool _isPanelSpawned;
+        private bool _isRaycastActive = true;
 
         private TurretStatsScriptableObject[] turrets;
 
@@ -36,6 +37,10 @@ namespace TD.Managers
 
         public void SpawnPanelOnTile(ITile tile)
         {
+            if (!_isRaycastActive) return;
+
+            DeactivateRaycast(false);
+
             Vector3 screenSpacePosition = _camera.WorldToScreenPoint(tile.GetTransform().position);
             
             _upgradePanel.transform.position = screenSpacePosition;
@@ -49,6 +54,8 @@ namespace TD.Managers
         private void BackButtonPressed()
         {
             if (!_isPanelSpawned) return;
+
+            DeactivateRaycast(true);
 
             _isPanelSpawned = false;
 
@@ -65,11 +72,15 @@ namespace TD.Managers
             return buttons.ToArray();
         }
 
+        public void DeactivateRaycast(bool isActive) => _isRaycastActive = isActive;
+
         private TurretStatsScriptableObject[] LoadTurrets => Resources.LoadAll<TurretStatsScriptableObject>("TurretsData");
     }
 
     public interface ITileUpgradePanelManager
     {
         public void SpawnPanelOnTile(ITile tile);
+
+        public void DeactivateRaycast(bool isActive);
     }
 }
