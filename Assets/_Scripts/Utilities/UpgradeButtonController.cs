@@ -2,6 +2,8 @@ using TD.Stats;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Zenject;
+using TD.Interfaces;
 
 namespace TD.UI
 {
@@ -12,6 +14,9 @@ namespace TD.UI
 
         [SerializeField]
         private TextMeshProUGUI costText;
+
+        [Inject]
+        private IUpgradePanelController panelController;
 
         private UpgradePanelButtonData data;
 
@@ -28,9 +33,7 @@ namespace TD.UI
 
         public void PressButton()
         {
-            Debug.Log("Button pressed");
-
-            //UpgradePanelController.Instance.OnButtonPressed(data);
+            panelController.OnButtonPressed(data);
         }
     }
 }
