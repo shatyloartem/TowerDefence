@@ -33,7 +33,6 @@ namespace TD.Managers
             Instance = this;
 
             _waves = LoadWaves;
-            _waves = LoadWaves;
             _enemiesPath = LoadEnemiesPath();
             _pathDistance = GetPathDistance(_enemiesPath);
         }
