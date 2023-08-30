@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace TD.UI
 {
-    public class UpgradePanelController : Singleton<UpgradePanelController>, IUpgradePanelController
+    public class UpgradePanelController : MonoBehaviour, IUpgradePanelController
     {
         [SerializeField]
         private GameObject buttonPrefab;
@@ -22,8 +22,12 @@ namespace TD.UI
 
         private List<GameObject> spawnedButtons = new List<GameObject>();
 
-        protected override void Awake()
+        public static UpgradePanelController Instance { get; private set; }
+
+        private void Awake()
         {
+            Instance = this;
+
             Transform = GetComponent<RectTransform>();
             layoutGroup = buttonsSpawnParent.GetComponent<HorizontalLayoutGroupFixed>();
         }

@@ -33,6 +33,8 @@ namespace TD.UI
 
         public void PressButton()
         {
+            UpgradePanelController.Instance.OnButtonPressed(data);
+
             // panelController.OnButtonPressed(data);
         }
     }
