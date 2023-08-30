@@ -33,7 +33,7 @@ namespace TD.UI
 
         public void PressButton()
         {
-            panelController.OnButtonPressed(data);
+            // panelController.OnButtonPressed(data);
         }
     }
 }
