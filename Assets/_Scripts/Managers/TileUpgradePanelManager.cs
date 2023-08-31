@@ -19,11 +19,14 @@ namespace TD.Managers
         private bool _isRaycastActive = true;
 
         private TurretStatsScriptableObject[] turrets;
+        private List<GameObject> spawnedTurrets;
 
         private IUpgradePanelController _upgradePanelController;
 
         protected override void Awake()
         {
+            base.Awake();
+
             _camera = Camera.main;
 
             BackButtonManager.OnBackButtonPressed += BackButtonPressed;
@@ -39,14 +42,11 @@ namespace TD.Managers
         {
             if (!_isRaycastActive) return;
 
-            DeactivateRaycast(false);
 
             Vector3 screenSpacePosition = _camera.WorldToScreenPoint(tile.GetTransform().position);
             
             _upgradePanel.transform.position = screenSpacePosition;
-            _upgradePanel.SetActive(true);
-
-            _isPanelSpawned = true;
+            SetUpgradePanelActive(true);
 
             _upgradePanelController.SetButtons(GetButtonsDataFromTurrets());
         }
@@ -55,11 +55,7 @@ namespace TD.Managers
         {
             if (!_isPanelSpawned) return;
 
-            DeactivateRaycast(true);
-
-            _isPanelSpawned = false;
-
-            _upgradePanel.SetActive(false);
+            SetUpgradePanelActive(false);
         }
 
         private UpgradePanelButtonData[] GetButtonsDataFromTurrets()
@@ -71,6 +67,17 @@ namespace TD.Managers
 
             return buttons.ToArray();
         }
+
+        public void SetUpgradePanelActive(bool isActive)
+        {
+            DeactivateRaycast(!isActive);
+            _isPanelSpawned = isActive;
+            _upgradePanel.SetActive(isActive);
+        }
+
+        public void AddNewTurret(GameObject turret) => spawnedTurrets.Add(turret);
+
+        public void RemoveTurret(GameObject turret) => spawnedTurrets.Remove(turret);
 
         public void DeactivateRaycast(bool isActive) => _isRaycastActive = isActive;
 

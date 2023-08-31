@@ -7,7 +7,7 @@ namespace TD.Singleton
         public static T Instance { get; private set; }
         protected virtual void Awake() => Instance = this as T;
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             if (Instance == null)
                 Instance = this as T;

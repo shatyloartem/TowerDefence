@@ -5,10 +5,11 @@ using TD.Singleton;
 using TD.Stats;
 using UnityEngine;
 using UnityEngine.UI;
+using TD.Managers;
 
 namespace TD.UI
 {
-    public class UpgradePanelController : MonoBehaviour, IUpgradePanelController
+    public class UpgradePanelController : Singleton<UpgradePanelController>, IUpgradePanelController
     {
         [SerializeField]
         private GameObject buttonPrefab;
@@ -22,18 +23,18 @@ namespace TD.UI
 
         private List<GameObject> spawnedButtons = new List<GameObject>();
 
-        public static UpgradePanelController Instance { get; private set; }
-
-        private void Awake()
+        protected override void Awake()
         {
-            Instance = this;
+            base.Awake();
 
             Transform = GetComponent<RectTransform>();
             layoutGroup = buttonsSpawnParent.GetComponent<HorizontalLayoutGroupFixed>();
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             if (Transform == null) Transform = GetComponent<RectTransform>();
 
             if (layoutGroup == null) buttonsSpawnParent.GetComponent<HorizontalLayoutGroup>();
@@ -65,7 +66,11 @@ namespace TD.UI
 
         public void OnButtonPressed(UpgradePanelButtonData buttonData)
         {
-            Debug.Log(buttonData);
+            // TODO: Check if have enough money & minus it
+
+
+
+            TileUpgradePanelManager.Instance.SetUpgradePanelActive(false);
         }
 
         private void SetPanelSize()
