@@ -1,9 +1,7 @@
 {
     "name": "Stats",
     "rootNamespace": "",
-    "references": [
-        "GUID:afcba66ea3151ef499789e9f9566b6fe"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
