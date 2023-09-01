@@ -1,19 +1,25 @@
 ﻿using UnityEngine;
+using TD.Interfaces;
 
 namespace TD.Stats
 {
     public class UpgradePanelButtonData
     {
         public Sprite icon;
+        public GameObject turretPrefab;
+
+        public ITile spawnTile;
 
         public int cost = 100;
         public int turretIndex;
 
         public bool isThisUpgrade = false;
 
-        public UpgradePanelButtonData(Sprite icon, int cost = default, int turretIndex = default, bool isThisUpgrade = default)
+        public UpgradePanelButtonData(Sprite icon, GameObject turretPrefab, ITile spawnTile, int cost = default, int turretIndex = default, bool isThisUpgrade = default)
         {
             this.icon = icon;
+            this.turretPrefab = turretPrefab;
+            this.spawnTile = spawnTile;
             this.cost = cost;
             this.turretIndex = turretIndex;
             this.isThisUpgrade = isThisUpgrade;

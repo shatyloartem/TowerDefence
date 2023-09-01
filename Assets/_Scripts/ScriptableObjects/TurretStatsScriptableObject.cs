@@ -1,4 +1,3 @@
-using Codice.Client.BaseCommands;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -29,5 +28,9 @@ namespace TD.Turrets
         public float towerRotationSpeed = 25f;
         [TabGroup("Rotation")]
         public float fireAngle = 20;
+
+        [Header("References")]
+        [TabGroup("References")]
+        public GameObject turretPrefab;
     }
 }

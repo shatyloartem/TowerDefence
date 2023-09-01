@@ -68,7 +68,7 @@ namespace TD.UI
         {
             // TODO: Check if have enough money & minus it
 
-
+            
 
             TileUpgradePanelManager.Instance.SetUpgradePanelActive(false);
         }

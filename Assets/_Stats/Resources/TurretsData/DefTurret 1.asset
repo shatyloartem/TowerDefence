@@ -20,3 +20,5 @@ MonoBehaviour:
   fireCooldown: 0.5
   towerRotationSpeed: 75
   fireAngle: 20
+  turretPrefab: {fileID: 5314804497749217476, guid: 0ff9bc44d2944f243a23e31a812dee7c,
+    type: 3}

@@ -48,7 +48,7 @@ namespace TD.Managers
             _upgradePanel.transform.position = screenSpacePosition;
             SetUpgradePanelActive(true);
 
-            _upgradePanelController.SetButtons(GetButtonsDataFromTurrets());
+            _upgradePanelController.SetButtons(GetButtonsDataFromTurrets(tile));
         }
 
         private void BackButtonPressed()
@@ -58,12 +58,12 @@ namespace TD.Managers
             SetUpgradePanelActive(false);
         }
 
-        private UpgradePanelButtonData[] GetButtonsDataFromTurrets()
+        private UpgradePanelButtonData[] GetButtonsDataFromTurrets(ITile tile)
         {
             List<UpgradePanelButtonData> buttons = new List<UpgradePanelButtonData>();
 
             foreach (var turret in turrets)
-                buttons.Add(new UpgradePanelButtonData(turret.buttonIcon, turret.turretCost, turret.turretIndex));
+                buttons.Add(new UpgradePanelButtonData(turret.buttonIcon, turret.turretPrefab, turret.turretCost, turret.turretIndex));
 
             return buttons.ToArray();
         }
