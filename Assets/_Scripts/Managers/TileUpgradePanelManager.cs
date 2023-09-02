@@ -63,7 +63,7 @@ namespace TD.Managers
             List<UpgradePanelButtonData> buttons = new List<UpgradePanelButtonData>();
 
             foreach (var turret in turrets)
-                buttons.Add(new UpgradePanelButtonData(turret.buttonIcon, turret.turretPrefab, turret.turretCost, turret.turretIndex));
+                buttons.Add(new UpgradePanelButtonData(turret.buttonIcon, turret.turretPrefab, tile.GetTransform(), turret.turretCost, turret.turretIndex));
 
             return buttons.ToArray();
         }
