@@ -68,9 +68,11 @@ namespace TD.UI
         {
             // TODO: Check if have enough money & minus it
 
-            
+            TileUpgradePanelManager upgradeManager = TileUpgradePanelManager.Instance;
 
-            TileUpgradePanelManager.Instance.SetUpgradePanelActive(false);
+            upgradeManager.AddNewTurret(Instantiate(buttonData.turretPrefab, buttonData.spawnTile));
+
+            upgradeManager.SetUpgradePanelActive(false);
         }
 
         private void SetPanelSize()
